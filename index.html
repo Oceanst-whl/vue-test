@@ -5,9 +5,125 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + Vue</title>
+    <style>
+    	.active{
+    		border: 5px solid #0000FF ;
+    	}
+    </style>
   </head>
+
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <div id="app">
+      {{message}}
+
+      <h1>{{home.name1}}</h1>
+
+      <h2>{{mobile[0]}}</h2>
+
+      <h1 v-text="message"></h1>
+
+      <p v-html="content"></p>
+
+      <input type="button" value="事件响应1" v-on:click="things" />
+      <input type="button" value="事件响应2" @click="things" />
+
+      <h1 @click="mihayou">{{name}}</h1>
+      
+      <input type="button" value="-" @click="sub" />
+      <span>{{num}}</span>
+      <input type="button" value="+" @click="add" />
+      
+      <p>
+      	<img src="img/效果图.jpg" alt="效果图片" v-show="isshow"/>
+      	<input type="button" value="图层控制开关" @click="show"/>
+      	<img src="img/效果图.jpg" alt="效果图片" v-show="num>5"/> <!--num大于5才显示 -->
+      </p>
+      
+      <p>
+      	<input type="button" value="v-if开关" @click="vif"/><!--vif不显示直接删除dom，vshow仅改变显示状态 -->
+      	<p v-if="vifshow">v-if显示文本</p>
+      </p>
+      
+      <p>
+      	<img v-bind:src="imgSrc" alt="v-bind控制属性"/>
+      	<img :src="imgSrc" alt="v-bind控制属性（简写）"/>
+      	<img :src="imgSrc" alt="" :class="{active:bindActive}" @click="togetActive" /><!--可以控制class属性 -->
+      </p>
+      
+      <p><!--轮播图-->
+      	<a href="#" @click="prevImg"> 《 </a>
+      		<img :src="imgArray[index]" :alt="imgArray[index]"/>
+      	<a href="#" @click="nextImg"> 》 </a>
+      </p>
+    </div>
+
+    <script>
+      var app = new Vue({
+        el: '#app',//绑定id
+        data: {
+          //数据
+          content: '<a href=‘http://www.baidu.com’>链接</a>',
+          message: '测试',
+          home: {
+            name1: '北京市',
+            name2: '天津市',
+          },
+          mobile: ['189', '186', '184'],
+          name: '小保底抽魈',
+          num:'1',
+          isshow:'false',
+          vifshow:'true',
+          imgSrc:'img/效果图.jpg',
+          bindActive:'true',
+          imgArray:['img/1.jpg','img/2.jpg','img/3.png'],
+          index:'0',
+        },
+
+        methods: {
+          //事件
+          things: function () {
+            //逻辑
+            alert('弹窗');
+          },
+          mihayou: function () {
+            this.name += '必歪';
+          },
+          sub:function(){
+          	if(this.num==0){
+          		alert("已到最小值");
+          	}else{
+          		this.num--;
+          	}
+          },
+          add:function(){
+          	this.num++;
+          },
+          show:function(){
+          	this.isshow = !this.isshow;
+          },
+          vif:function(){
+          	this.vifshow = !this.vifshow;
+          },
+          togetActive:function(){
+          	this.bindActive = !this.bindActive;
+          },
+          prevImg:function(){
+          	if (this.index == 0) {
+          		this.index = this.imgArray.length-1;
+          	}else{
+          		this.index --;
+          	}
+          },
+          nextImg:function(){
+          	if (this.index == this.imgArray.length-1) {
+          		this.index = 0;
+          	}else{
+          		this.index ++;
+          	}
+          },
+        },
+      });
+    </script>
   </body>
 </html>
